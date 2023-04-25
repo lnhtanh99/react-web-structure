@@ -1,4 +1,4 @@
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
 import { AuthToken, IUser } from '../../../models/user';
 import { ACCESS_TOKEN_KEY } from '../../../utils/constants';
@@ -29,7 +29,7 @@ export default function reducer(state: AuthState = {}, action: Action) {
     case getType(setUserInfo):
       return { ...state, user: action.data };
     case getType(logout):
-      Cookies.remove(ACCESS_TOKEN_KEY);
+      localStorage.removeItem(ACCESS_TOKEN_KEY);
       return { auth: '', user: null };
     default:
       return state;

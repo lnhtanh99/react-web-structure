@@ -17,7 +17,7 @@ import { fetchThunk } from '../../../common/redux/thunk';
 import './DetailPage.css';
 import 'react-image-crop/dist/ReactCrop.css';
 import { generateAvatarUpload } from '../../../../utils/upload';
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 import { replace } from 'connected-react-router';
 
 const DetailPage = () => {
@@ -105,7 +105,8 @@ const DetailPage = () => {
       const config = {
         headers: {
           'content-type': 'multipart/form-data',
-          Authorization: Cookies.get(ACCESS_TOKEN_KEY) || '',
+          Authorization: localStorage.getItem(ACCESS_TOKEN_KEY) || '',
+          // Authorization: Cookies.get(ACCESS_TOKEN_KEY) || '',
         },
       };
       const json = await axios.put(API_PATHS.userProfile, formData, config);

@@ -10,7 +10,7 @@ import { fetchThunk } from '../../common/redux/thunk';
 import { API_PATHS } from '../../../configs/api';
 import { RESPONSE_STATUS_SUCCESS } from '../../../utils/httpResponseCode';
 import { setUserInfo } from '../redux/authReducer';
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 import { ACCESS_TOKEN_KEY } from '../../../utils/constants';
 import { ROUTES } from '../../../configs/routes';
 import { replace } from 'connected-react-router';
@@ -34,7 +34,8 @@ const LoginPage = () => {
 
       if (json?.code === RESPONSE_STATUS_SUCCESS) {
         dispatch(setUserInfo(json.data));
-        Cookies.set(ACCESS_TOKEN_KEY, json.data.token, { expires: values.rememberMe ? 7 : undefined });
+        // Cookies.set(ACCESS_TOKEN_KEY, json.data.token, { expires: values.rememberMe ? 7 : undefined });
+        localStorage.setItem(ACCESS_TOKEN_KEY, json.data.token);
         dispatch(replace(ROUTES.home));
         return;
       }
