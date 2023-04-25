@@ -2,6 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { ILoginParams, ILoginValidation } from '../../../models/auth';
 import { validateLogin, validLogin } from '../utils';
+import { useFormik } from 'formik';
 
 interface Props {
   onLogin(values: ILoginParams): void;
@@ -9,32 +10,65 @@ interface Props {
   errorMessage: string;
 }
 
+interface Errors {
+  email?: string;
+  password?: string;
+}
+
 const LoginForm = (props: Props) => {
   const { onLogin, loading, errorMessage } = props;
 
-  const [formValues, setFormValues] = React.useState<ILoginParams>({ email: '', password: '', rememberMe: false });
-  const [validate, setValidate] = React.useState<ILoginValidation>();
+  // const [formValues, setFormValues] = React.useState<ILoginParams>({ email: '', password: '', rememberMe: false });
+  // const [validate, setValidate] = React.useState<ILoginValidation>();
 
-  const onSubmit = React.useCallback(() => {
-    const validate = validateLogin(formValues);
-
-    setValidate(validate);
-
-    if (!validLogin(validate)) {
-      return;
+  const validate = (values: any) => {
+    const errors: Errors = {};
+    if (!values.email) {
+      errors.email = 'emailRequire';
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+      errors.email = 'emailInvalid';
     }
 
-    onLogin(formValues);
-  }, [formValues, onLogin]);
+    if (!values.password) {
+      errors.password = 'passwordRequire';
+    }
+
+    if (values.password.length < 4 && values.password > 0) {
+      errors.password = 'minPasswordInvalid';
+    }
+
+    return errors;
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+      rememberMe: false
+    },
+    validate,
+    onSubmit: values => {
+      onLogin(values);
+    },
+  });
+
+  // const onSubmit = React.useCallback(() => {
+  //   const validate = validateLogin(formValues);
+
+  //   setValidate(validate);
+
+  //   if (!validLogin(validate)) {
+  //     return;
+  //   }
+
+  //   
+  // }, [formValues, onLogin]);
 
   return (
     <form
       style={{ maxWidth: '560px', width: '100%' }}
       noValidate
-      onSubmit={(e) => {
-        e.preventDefault();
-        onSubmit();
-      }}
+      onSubmit={formik.handleSubmit}
       className="row g-3 needs-validation"
     >
       {!!errorMessage && (
@@ -44,41 +78,58 @@ const LoginForm = (props: Props) => {
       )}
 
       <div className="col-md-12">
-        <label htmlFor="inputEmail" className="form-label">
+        <label htmlFor="email" className="form-label">
           <FormattedMessage id="email" />
         </label>
         <input
           type="text"
           className="form-control"
-          id="inputEmail"
-          value={formValues.email}
-          onChange={(e) => setFormValues({ ...formValues, email: e.target.value })}
+          id="email"
+          value={formik.values.email}
+          onChange={formik.handleChange}
         />
 
-        {!!validate?.email && (
-          <small className="text-danger">
-            <FormattedMessage id={validate?.email} />
-          </small>
-        )}
+        {formik.errors.email
+          &&
+          (formik.errors.email === 'emailRequire'
+            ?
+            <small className="text-danger">
+              <FormattedMessage id="emailRequire" />
+            </small>
+            :
+            <small className="text-danger">
+              <FormattedMessage id="emailInvalid" />
+            </small>
+          )
+        }
       </div>
 
       <div className="col-md-12">
-        <label htmlFor="inputPassword" className="form-label">
+        <label htmlFor="password" className="form-label">
           <FormattedMessage id="password" />
         </label>
         <input
           type="password"
           className="form-control"
-          id="inputPassword"
-          value={formValues.password}
-          onChange={(e) => setFormValues({ ...formValues, password: e.target.value })}
+          id="password"
+          value={formik.values.password}
+          onChange={formik.handleChange}
         />
 
-        {!!validate?.password && (
-          <small className="text-danger">
-            <FormattedMessage id={validate?.password} />
-          </small>
-        )}
+        {formik.errors.password
+          &&
+          (formik.errors.password === 'passwordRequire'
+            ?
+            <small className="text-danger">
+              <FormattedMessage id="passwordRequire" />
+            </small>
+            :
+            <small className="text-danger">
+              <FormattedMessage id="minPasswordInvalid" />
+            </small>
+          )
+        }
+
       </div>
 
       <div className="col-12">
@@ -86,12 +137,12 @@ const LoginForm = (props: Props) => {
           <input
             className="form-check-input"
             type="checkbox"
-            id="invalidCheck"
+            id="rememberMe"
             value=""
-            checked={formValues.rememberMe}
-            onChange={(e) => setFormValues({ ...formValues, rememberMe: !!e.target.checked })}
+            checked={formik.values.rememberMe}
+            onChange={formik.handleChange}
           />
-          <label className="form-check-label" htmlFor="invalidCheck">
+          <label className="form-check-label" htmlFor="rememberMe">
             <FormattedMessage id="rememberMe" />
           </label>
         </div>
