@@ -34,7 +34,7 @@ const LoginForm = (props: Props) => {
       errors.password = 'passwordRequire';
     }
 
-    if (values.password.length < 4 && values.password > 0) {
+    if (values.password.length < 4 && values.password.length > 0) {
       errors.password = 'minPasswordInvalid';
     }
 
@@ -48,6 +48,8 @@ const LoginForm = (props: Props) => {
       rememberMe: false
     },
     validate,
+    validateOnChange: false, // this one
+    validateOnBlur: false,
     onSubmit: values => {
       onLogin(values);
     },
