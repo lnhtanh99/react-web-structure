@@ -92,7 +92,7 @@ const LoginForm = (props: Props) => {
           onChange={formik.handleChange}
         />
 
-        {formik.errors.email
+        {/* {formik.errors.email
           &&
           (formik.errors.email === 'emailRequire'
             ?
@@ -104,6 +104,12 @@ const LoginForm = (props: Props) => {
               <FormattedMessage id="emailInvalid" />
             </small>
           )
+        } */}
+        {formik.errors.email
+          &&
+          <small className="text-danger">
+            <FormattedMessage id={formik.errors.email} />
+          </small>
         }
       </div>
 
@@ -121,16 +127,9 @@ const LoginForm = (props: Props) => {
 
         {formik.errors.password
           &&
-          (formik.errors.password === 'passwordRequire'
-            ?
-            <small className="text-danger">
-              <FormattedMessage id="passwordRequire" />
-            </small>
-            :
-            <small className="text-danger">
-              <FormattedMessage id="minPasswordInvalid" />
-            </small>
-          )
+          <small className="text-danger">
+            <FormattedMessage id={formik.errors.password} />
+          </small>
         }
 
       </div>
