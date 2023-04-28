@@ -10,8 +10,6 @@ import { locationURL } from '../../../utils/constants';
 import { ISignUpParams } from '../../../models/auth';
 import { API_PATHS } from '../../../configs/api';
 import { RESPONSE_STATUS_SUCCESS } from '../../../utils/httpResponseCode';
-import { setUserInfo } from '../redux/authReducer';
-import { ACCESS_TOKEN_KEY } from '../../../utils/constants';
 import { ROUTES } from '../../../configs/routes';
 import { replace } from 'connected-react-router';
 import { getErrorMessageResponse } from '../../../utils';
