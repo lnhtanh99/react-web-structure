@@ -1,7 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { ILoginParams, ILoginValidation } from '../../../models/auth';
-import { validateLogin, validLogin } from '../utils';
+import { ILoginParams } from '../../../models/auth';
 import { useFormik } from 'formik';
 import { validEmailRegex } from '../../../utils';
 
@@ -18,9 +17,6 @@ interface Errors {
 
 const LoginForm = (props: Props) => {
   const { onLogin, loading, errorMessage } = props;
-
-  // const [formValues, setFormValues] = React.useState<ILoginParams>({ email: '', password: '', rememberMe: false });
-  // const [validate, setValidate] = React.useState<ILoginValidation>();
 
   const validate = (values: any) => {
     const errors: Errors = {};
@@ -48,24 +44,13 @@ const LoginForm = (props: Props) => {
       rememberMe: false
     },
     validate,
-    validateOnChange: false, // this one
+    validateOnChange: false, 
     validateOnBlur: false,
     onSubmit: values => {
       onLogin(values);
     },
   });
 
-  // const onSubmit = React.useCallback(() => {
-  //   const validate = validateLogin(formValues);
-
-  //   setValidate(validate);
-
-  //   if (!validLogin(validate)) {
-  //     return;
-  //   }
-
-  //   
-  // }, [formValues, onLogin]);
 
   return (
     <form
@@ -92,19 +77,6 @@ const LoginForm = (props: Props) => {
           onChange={formik.handleChange}
         />
 
-        {/* {formik.errors.email
-          &&
-          (formik.errors.email === 'emailRequire'
-            ?
-            <small className="text-danger">
-              <FormattedMessage id="emailRequire" />
-            </small>
-            :
-            <small className="text-danger">
-              <FormattedMessage id="emailInvalid" />
-            </small>
-          )
-        } */}
         {formik.errors.email
           &&
           <small className="text-danger">
@@ -159,7 +131,7 @@ const LoginForm = (props: Props) => {
             disabled={loading}
           >
             {loading && <div className="spinner-border spinner-border-sm text-light mr-2" role="status" />}
-            <FormattedMessage id="register" />
+            <FormattedMessage id="login" />
           </button>
         </div>
       </div>

@@ -2,10 +2,21 @@
   "welcome": "Xin chào",
   "email": "Địa chỉ Email",
   "password": "Mật khẩu",
+  "repeatPassword": "Xác nhận lại mật khẩu",
+  "name": "Họ và tên",
+  "gender": "Giới tính",
+  "region": "Quốc gia",
+  "state": "Thành phố",
   "rememberMe": "Lưu thông tin đăng nhập",
   "emailRequire": "Vui lòng nhập địa chỉ email",
   "emailInvalid": "Địa chỉ email không hợp lệ",
   "passwordRequire": "Vui lòng nhập mật khẩu",
   "minPasswordInvalid": "Mật khẩu tối thiểu 4 ký tự",
-  "register": "Đăng nhập"
+  "repeatPasswordWrong": "Mật khẩu nhập lại không chính xác",
+  "register": "Đăng ký ngay",
+  "login": "Đăng nhập",
+  "nameRequired": "Họ và tên không được để trống",
+  "genderRequired": "Giới tính không được để trống",
+  "regionRequired": "Quốc gia không được để trống",
+  "stateRequired": "Thành phố không được để trống"
 }

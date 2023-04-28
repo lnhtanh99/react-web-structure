@@ -15,6 +15,7 @@ import { ACCESS_TOKEN_KEY } from '../../../utils/constants';
 import { ROUTES } from '../../../configs/routes';
 import { replace } from 'connected-react-router';
 import { getErrorMessageResponse } from '../../../utils';
+import { FormattedMessage } from 'react-intl';
 
 const LoginPage = () => {
   const dispatch = useDispatch<ThunkDispatch<AppState, null, Action<string>>>();
@@ -59,6 +60,9 @@ const LoginPage = () => {
       <img src={logo} alt="" style={{ maxWidth: '250px', margin: '32px' }} />
 
       <LoginForm onLogin={onLogin} loading={loading} errorMessage={errorMessage} />
+      <a href="/sign-up">
+        <FormattedMessage id="register" />
+      </a>
     </div>
   );
 };
