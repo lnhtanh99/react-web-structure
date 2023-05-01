@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { ILoginParams } from '../../../models/auth';
 import { useFormik } from 'formik';
-import { validEmailRegex } from '../../../utils';
+import { validateLogin } from '../utils';
 
 interface Props {
   onLogin(values: ILoginParams): void;
@@ -10,32 +10,10 @@ interface Props {
   errorMessage: string;
 }
 
-interface Errors {
-  email?: string;
-  password?: string;
-}
 
 const LoginForm = (props: Props) => {
   const { onLogin, loading, errorMessage } = props;
-
-  const validate = (values: any) => {
-    const errors: Errors = {};
-    if (!values.email) {
-      errors.email = 'emailRequire';
-    } else if (!validEmailRegex.test(values.email)) {
-      errors.email = 'emailInvalid';
-    }
-
-    if (!values.password) {
-      errors.password = 'passwordRequire';
-    }
-
-    if (values.password.length < 4 && values.password.length > 0) {
-      errors.password = 'minPasswordInvalid';
-    }
-
-    return errors;
-  };
+  const validate = validateLogin;
 
   const formik = useFormik({
     initialValues: {

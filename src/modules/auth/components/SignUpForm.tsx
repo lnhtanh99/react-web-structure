@@ -1,79 +1,26 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl';
 import { useFormik } from 'formik';
-import { validEmailRegex } from '../../../utils';
-import { ILocationParams } from '../../../models/auth';
-import { IGenderParams } from '../../../models/auth';
+import { ILocationParams, IGenderParams } from '../../../models/auth';
 import { GENDER, locationURL } from '../../../utils/constants';
 import { ISignUpParams } from '../../../models/auth';
-
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { validateSignUp } from '../utils';
 
 interface Props {
-    onSignUp(values: ISignUpParams) : void;
+    onSignUp(values: ISignUpParams): void;
     loading: boolean;
     errorMessage: string;
     locations: Array<ILocationParams>;
     setLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-interface Errors {
-    email?: string;
-    password?: string;
-    repeatPassword?: string,
-    name?: string;
-    gender?: string,
-    region?: string,
-    state?: string,
-}
 
 const SignUpForm = ({ locations, loading, errorMessage, setLoading, onSignUp }: Props) => {
     const [states, setStates] = useState<Array<ILocationParams>>([]);
 
-    const validate = (values: any) => {
-        const errors: Errors = {};
-        if (!values.email) {
-            errors.email = 'emailRequire';
-        } else if (!validEmailRegex.test(values.email)) {
-            errors.email = 'emailInvalid';
-        }
-
-        if (!values.password) {
-            errors.password = 'passwordRequire';
-        }
-
-        if (values.password.length < 4 && values.password.length > 0) {
-            errors.password = 'minPasswordInvalid';
-        }
-
-        if (!values.repeatPassword) {
-            errors.repeatPassword = 'passwordRequire';
-        }
-
-        if (values.repeatPassword !== values.password) {
-            errors.repeatPassword = 'repeatPasswordWrong';
-        }
-
-        if (!values.name) {
-            errors.name = 'nameRequired';
-        }
-
-        if (!values.gender) {
-            errors.gender = 'genderRequired';
-        }
-
-        if (!values.region) {
-            errors.region = 'regionRequired';
-        }
-
-        if (!values.state) {
-            errors.state = 'stateRequired';
-        }
-
-        return errors;
-    };
-
+    const validate = validateSignUp;
 
     const formik = useFormik({
         initialValues: {
@@ -90,7 +37,7 @@ const SignUpForm = ({ locations, loading, errorMessage, setLoading, onSignUp }: 
         validateOnBlur: false,
         onSubmit: values => {
             // alert(JSON.stringify(values, null, 2));
-           onSignUp(values);
+            onSignUp(values);
         },
     });
 
@@ -244,7 +191,10 @@ const SignUpForm = ({ locations, loading, errorMessage, setLoading, onSignUp }: 
                     aria-label="Default select example"
                     id="region"
                     name="region"
-                    onChange={formik.handleChange}
+                    onChange={(e) => {
+                        formik.values.state = 0;
+                        formik.handleChange(e);
+                    }}
                     value={formik.values.region}
                 >
                     <option disabled hidden value="0"> -- select an option -- </option>
@@ -264,7 +214,8 @@ const SignUpForm = ({ locations, loading, errorMessage, setLoading, onSignUp }: 
                     </small>
                 }
             </div>
-            {(formik.values.region !== 0 && states) &&
+            {
+                (formik.values.region !== 0 && states) &&
                 <div className="col-md-12">
                     <label htmlFor="state" className="form-label">
                         <FormattedMessage id="state" />
@@ -309,7 +260,7 @@ const SignUpForm = ({ locations, loading, errorMessage, setLoading, onSignUp }: 
                     </button>
                 </div>
             </div>
-        </form>
+        </form >
     )
 }
 

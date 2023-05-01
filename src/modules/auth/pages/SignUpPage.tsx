@@ -14,8 +14,8 @@ import { ROUTES } from '../../../configs/routes';
 import { replace } from 'connected-react-router';
 import { getErrorMessageResponse } from '../../../utils';
 import axios from 'axios';
-
 import { fetchThunk } from '../../common/redux/thunk';
+
 const SignUpPage = () => {
     const dispatch = useDispatch<ThunkDispatch<AppState, null, Action<string>>>();
     const [loading, setLoading] = useState<boolean>(false);

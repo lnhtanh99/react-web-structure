@@ -1,37 +1,64 @@
-import { ILoginParams, ILoginValidation } from '../../models/auth';
+import { ILoginValidation, ISignUpValidation } from '../../models/auth';
 import { validEmailRegex } from '../../utils';
 
-const validateEmail = (email: string) => {
-  if (!email) {
-    return 'emailRequire';
+export const validateLogin = (values: any) => {
+  const errors: ILoginValidation = {};
+  if (!values.email) {
+    errors.email = 'emailRequire';
+  } else if (!validEmailRegex.test(values.email)) {
+    errors.email = 'emailInvalid';
   }
 
-  if (!validEmailRegex.test(email)) {
-    return 'emailInvalid';
+  if (!values.password) {
+    errors.password = 'passwordRequire';
   }
 
-  return '';
-};
-
-const validatePassword = (password: string) => {
-  if (!password) {
-    return 'passwordRequire';
+  if (values.password.length < 4 && values.password.length > 0) {
+    errors.password = 'minPasswordInvalid';
   }
 
-  if (password.length < 4) {
-    return 'minPasswordInvalid';
+  return errors;
+};
+
+export const validateSignUp = (values:any) => {
+  const errors: ISignUpValidation = {};
+  if (!values.email) {
+      errors.email = 'emailRequire';
+  } else if (!validEmailRegex.test(values.email)) {
+      errors.email = 'emailInvalid';
   }
 
-  return '';
-};
+  if (!values.password) {
+      errors.password = 'passwordRequire';
+  }
 
-export const validateLogin = (values: ILoginParams): ILoginValidation => {
-  return {
-    email: validateEmail(values.email),
-    password: validatePassword(values.password),
-  };
-};
+  if (values.password.length < 4 && values.password.length > 0) {
+      errors.password = 'minPasswordInvalid';
+  }
 
-export const validLogin = (values: ILoginValidation) => {
-  return !values.email && !values.password;
-};
+  if (!values.repeatPassword) {
+      errors.repeatPassword = 'passwordRequire';
+  }
+
+  if (values.repeatPassword !== values.password) {
+      errors.repeatPassword = 'repeatPasswordWrong';
+  }
+
+  if (!values.name) {
+      errors.name = 'nameRequired';
+  }
+
+  if (!values.gender) {
+      errors.gender = 'genderRequired';
+  }
+
+  if (!values.region) {
+      errors.region = 'regionRequired';
+  }
+
+  if (!values.state) {
+      errors.state = 'stateRequired';
+  }
+
+  return errors;
+}

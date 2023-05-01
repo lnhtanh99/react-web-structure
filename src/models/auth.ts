@@ -5,8 +5,8 @@ export interface ILoginParams {
 }
 
 export interface ILoginValidation {
-  email: string;
-  password: string;
+  email?: string;
+  password?: string;
 }
 
 export interface ISignUpParams {
@@ -17,6 +17,16 @@ export interface ISignUpParams {
   gender: string;
   region: number;
   state: number;
+}
+
+export interface ISignUpValidation {
+  email?: string;
+  password?: string;
+  repeatPassword?: string;
+  name?: string;
+  gender?: string;
+  region?: string;
+  state?: string;
 }
 
 export interface ILocationParams {
